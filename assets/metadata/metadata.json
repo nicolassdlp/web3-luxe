@@ -1,0 +1,13 @@
+{
+  "name": "Audemars Piguet Royal Oak #100/350",
+  "description": "Passeport Numérique de Produit - Authentification garantie on-chain.",
+  "image": "ipfs://bafkreihhckenajin6gqjx5j3v7gufl5xwa7jzt5ke34u55iqja2abfjnv4",
+  "animation_url": "ipfs://bafybeibcajzhmmy6jfx3lix7dcrju654qghf4gezycvr5hl64atjgagcqm",
+  "attributes": [
+    { "trait_type": "Marque", "value": "Audemars Piguet" },
+    { "trait_type": "Modèle", "value": "Royal Oak" },
+    { "trait_type": "Matière", "value": "Acier" },
+    { "trait_type": "Calibre", "value": "2121" },
+    { "trait_type": "Année", "value": "2026" }
+  ]
+}
