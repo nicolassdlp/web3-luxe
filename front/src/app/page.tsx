@@ -4,6 +4,7 @@ import { jsPDF } from "jspdf";
 import { usePrivy } from '@privy-io/react-auth';
 import { useState } from 'react';
 import { publicClient, LUXURY_WATCH_ADDRESS, luxuryWatchABI } from '@/config/contracts';
+import TransferModule from '@/components/TransferModule';
 
 export default function Home() {
   const { ready, authenticated, user, login, logout } = usePrivy();
@@ -262,9 +263,14 @@ export default function Home() {
 
                 {/* ACTION PRIMAIRE */}
                 {watchDetails.isOwner && activeTab === 'details' && (
-                  <button className="w-full py-5 bg-[#d4bc8d] text-black text-[10px] tracking-[0.4em] font-extrabold uppercase hover:brightness-110 shadow-lg shadow-[#d4bc8d]/5 transition mt-4 animate-in slide-in-from-bottom-2">
-                    Transférer la Propriété
-                  </button>
+                  <TransferModule 
+                    watchDetails={watchDetails}
+                    userWallet={user?.wallet?.address}
+                    onTransferSuccess={() => {
+                      setWatchDetails(null); // On "perd" la vue de la montre car elle n'est plus à nous
+                      alert("La montre a été retirée de votre coffre numérique.");
+                    }}
+                  />
                 )}
               </div>
             )}
