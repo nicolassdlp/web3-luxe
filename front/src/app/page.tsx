@@ -5,12 +5,14 @@ import { usePrivy } from '@privy-io/react-auth';
 import { useState } from 'react';
 import { publicClient, LUXURY_WATCH_ADDRESS, luxuryWatchABI } from '@/config/contracts';
 import TransferModule from '@/components/TransferModule';
+import Marketplace from '@/components/Marketplace';
 
 export default function Home() {
   const { ready, authenticated, user, login, logout } = usePrivy();
   const [isScanning, setIsScanning] = useState(false);
   const [watchDetails, setWatchDetails] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'details' | 'history' | 'warranty'>('details');
+  const [appMode, setAppMode] = useState<'coffre' | 'boutique'>('coffre');
 
   const handleNFCScan = async () => {
     setIsScanning(true);
@@ -24,7 +26,8 @@ export default function Home() {
       }) as string;
 
       const userWallet = user?.wallet?.address;
-      const isOwner = userWallet?.toLowerCase() === ownerAddress.toLowerCase();
+      // Pour le mode démo, on considère que si on a scanné la montre, on est le propriétaire
+      const isOwner = true; // userWallet?.toLowerCase() === ownerAddress.toLowerCase();
 
       setTimeout(() => {
         setWatchDetails({
@@ -157,7 +160,14 @@ export default function Home() {
           </div>
         ) : (
           <div className="space-y-8 animate-in slide-in-from-bottom-6 duration-1000">
-            {!watchDetails ? (
+            <div className="flex border-b border-white/5 justify-between">
+              <button onClick={() => setAppMode('coffre')} className={`pb-4 text-[9px] tracking-[0.2em] uppercase transition-all ${appMode === 'coffre' ? 'text-[#d4bc8d] border-b border-[#d4bc8d]' : 'text-zinc-600'}`}>Mon Coffre</button>
+              <button onClick={() => setAppMode('boutique')} className={`pb-4 text-[9px] tracking-[0.2em] uppercase transition-all ${appMode === 'boutique' ? 'text-[#d4bc8d] border-b border-[#d4bc8d]' : 'text-zinc-600'}`}>Boutique</button>
+            </div>
+
+            {appMode === 'boutique' ? (
+              <Marketplace />
+            ) : !watchDetails ? (
               <div className="text-center py-24 space-y-12">
                 <div className="relative mx-auto w-56 h-56 flex items-center justify-center">
                   <div className={`absolute inset-0 border-[0.5px] border-[#d4bc8d]/20 rotate-[22.5deg] transition-all duration-[3000ms] ${isScanning ? 'rotate-[202.5deg] scale-110' : ''}`}></div>
@@ -215,15 +225,17 @@ export default function Home() {
                     <div className="relative pl-8 space-y-12">
                       <div className="absolute left-[3px] top-2 bottom-2 w-px bg-white/10"></div>
                       <div className="relative">
-                        <div className="absolute -left-[32px] top-1 w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></div>
+                        {/* PAST STATE: Zinc or Gold without the intense glow */}
+                        <div className="absolute -left-[32px] top-1 w-2 h-2 rounded-full bg-zinc-600"></div>
                         <p className="text-[10px] tracking-wider uppercase font-bold text-white">Manufacture Le Brassus</p>
                         <p className="text-[8px] text-zinc-500 uppercase mt-1 tracking-widest">Origine • Mars 2024</p>
                       </div>
                       <div className="relative">
-                        <div className="absolute -left-[32px] top-1 w-2 h-2 rounded-full bg-[#d4bc8d] animate-pulse"></div>
+                        {/* CURRENT STATE: Green LED */}
+                        <div className="absolute -left-[32px] top-1 w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e] animate-pulse"></div>
                         <p className="text-[10px] tracking-wider uppercase font-bold text-white">Acquisition Certifiée</p>
                         <p className="text-[8px] text-zinc-500 uppercase mt-1 tracking-widest leading-relaxed">
-                          Propriétaire : {user?.wallet?.address?.slice(0,18)}...
+                          Propriétaire Actuel: {user?.wallet?.address?.slice(0,18)}...
                         </p>
                       </div>
                     </div>
@@ -274,6 +286,8 @@ export default function Home() {
                 )}
               </div>
             )}
+            {/* FIN DU SWITCH COFFRE/BOUTIQUE */}
+            {appMode === 'coffre' ? '' : ''}
           </div>
         )}
       </div>

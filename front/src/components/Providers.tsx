@@ -14,7 +14,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           logo: 'https://votre-logo.com/logo.png',
         },
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets', // Crée le wallet web3 invisible automatiquement !
+          createOnLogin: 'users-without-wallets', // type might be ignored, left as is to not break existing flow if using older Privy
+        },
+        // Configuration ERC-4337 (Smart Wallets pour le Gasless via paymaster)
+        smartWallets: {
+          createOnLogin: true,
+          requireSmartWallet: false, // <-- Mis sur false pour ne pas bloquer la connexion si non activé sur le dashboard
         },
       }}
     >
