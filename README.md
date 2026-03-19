@@ -15,6 +15,11 @@ https://book.getfoundry.sh/
 
 ## Usage
 
+### Install
+```shell
+curl -L https://foundry.paradigm.xyz | bash
+```
+
 ### Build
 
 ```shell
